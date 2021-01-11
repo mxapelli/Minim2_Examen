@@ -1,3 +1,3 @@
 # Minim2_Examen
-Marc Xaplelli
+Marc Xapelli
 11/01/2021
