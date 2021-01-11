@@ -33,7 +33,7 @@ public class InitialActivity extends AppCompatActivity {
         String username = prefs.getString("username", "");
 
         //String name =getIntent().getExtras().getString("usuario");
-        //uname.setText(name);
+        uname.setText(username);
 
     }
 
