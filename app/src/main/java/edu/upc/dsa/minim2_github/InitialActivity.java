@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.content.SharedPreferences;
 
@@ -22,6 +23,7 @@ public class InitialActivity extends AppCompatActivity {
     APIInterface apiInterface;
     public static final String MY_PREFS_NAME = "user_pref";
     EditText uname;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class InitialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_initial);
         apiInterface = APIClient.getClient().create(APIInterface.class);
         uname = (EditText) findViewById(R.id.user);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
         String username = prefs.getString("username", "");
 
@@ -46,7 +49,7 @@ public class InitialActivity extends AppCompatActivity {
             userCall.enqueue(new Callback<Usuario>() {
                 @Override
                 public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                    //progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
                     Log.d("TAG",response.code()+"");
                     if (response.code() == 200) {
                         Usuario user1 = response.body();
@@ -60,7 +63,7 @@ public class InitialActivity extends AppCompatActivity {
                             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                                 user1.setRepos(response.body());
                                 instanciaUsuario.getInstance().setUser(user1);
-                                //progressBar.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
                                 Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
                                 startActivity(intent);
                             }
@@ -72,7 +75,7 @@ public class InitialActivity extends AppCompatActivity {
                         });
                     }
                     else{
-                        Toast toast = Toast.makeText(getApplicationContext(),"User does not exist", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(getApplicationContext(),"Error", Toast.LENGTH_LONG);
                         toast.show();
 
                     }
